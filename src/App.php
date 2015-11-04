@@ -16,10 +16,17 @@ use Clout\Commands\ExitCommand;
 
 class App
 {
+
     private $userService;
+
+
     public function __construct() {
         $this->userService = new UserService();
     }
+
+    /**
+     * Entry function of the application
+     */
     public function run()
     {
 
@@ -37,6 +44,10 @@ class App
         }
     }
 
+    /**
+     * Process user input
+     * @return string
+     */
     private function getInput()
     {
         $handle = fopen("php://stdin", "r");
@@ -46,6 +57,11 @@ class App
         return $input;
     }
 
+    /**
+     * Recognize which command based on user input
+     * @param $input
+     * @return CloutCommand|ExitCommand|FollowsCommand|HelpCommand|null
+     */
     private function getValidCommand($input)
     {
         if (FollowsCommand::isCommand($input)) {
