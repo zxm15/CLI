@@ -14,9 +14,17 @@ class ExitCommand extends UserServiceCommand
     const NAME = 'exit';
     const PATTERN = '/^exit$/i';
 
+    /**
+     * @param $input
+     */
     public function parse($input) {
         $this->arguments[] = strcasecmp($input, 'exit');
     }
+
+    /**
+     * Exit the CLI
+     * @param UserService $userService
+     */
     public function execute(UserService $userService) {
         if ($this->arguments[0] == 0) {
             echo "clout exited!\n";

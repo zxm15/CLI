@@ -14,9 +14,17 @@ class HelpCommand extends UserServiceCommand
     const NAME = 'help';
     const PATTERN = '/^help$/i';
 
+    /**
+     * @param $input
+     */
     public function parse($input) {
         $this->arguments[] = strcasecmp($input, 'help');
     }
+
+    /**
+     * Help command
+     * @param UserService $userService
+     */
     public function execute(UserService $userService) {
         if ($this->arguments[0] == 0) {
             echo "We support commands: 1. follows 2. clout 'user' 3. clout  4. help  5 exit \n";

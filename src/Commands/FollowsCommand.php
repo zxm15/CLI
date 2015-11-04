@@ -15,10 +15,12 @@ class FollowsCommand extends UserServiceCommand
     const NAME = 'follows';
     const PATTERN = '/\s+follows\s+/i';
 
+    /**
+     * Handle follows request
+     * @param UserService $userService
+     */
     public function execute(UserService $userService) {
         if (count($this->arguments) == 2 && strlen($this->arguments[0]) > 0 && strlen($this->arguments[1]) > 0) {
-//            echo "The follower is ". $this->arguments[0]."\n";
-//            echo "The followee is ". $this->arguments[1]."\n";
             $followerName = $this->arguments[0];
             $followeeName = $this->arguments[1];
             try {

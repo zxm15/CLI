@@ -15,6 +15,11 @@ class CloutCommand extends UserServiceCommand
     const NAME = 'clout';
     const PATTERN = '/^clout\s*/i';
 
+    /**
+     * Answer clout request to get influence of either a single user or all users
+     * @param UserService $userService
+     * @throws \Clout\Users\RuntimeException
+     */
     public function execute(UserService $userService) {
         if (count($this->arguments) == 2) {
             if (strlen($this->arguments[1]) > 0) {
