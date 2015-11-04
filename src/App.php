@@ -26,7 +26,6 @@ class App
         while (true) {
             echo "> ";
             $input = $this->getInput();
-            echo "\n";
             $command = $this->getValidCommand($input);
             if (is_null($command)) {
                 echo "Please input the correct commands. Type 'help' to see tips of commands \n";
@@ -43,7 +42,7 @@ class App
         $handle = fopen("php://stdin", "r");
         $input = fgets($handle);
         $input = trim($input);
-
+        $input = strtolower($input);
         return $input;
     }
 
