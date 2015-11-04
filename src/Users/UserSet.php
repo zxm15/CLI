@@ -25,7 +25,7 @@ class UserSet
         $this->bigFatherMap[$userName] = $bigFatherName;
     }
     public function compressFindBigFather($userName) {
-        if (! $this->contains($userName)) throw new \RuntimeException("The user does not exist");
+        if (! $this->contains($userName)) return null;
         $fatherName = $this->bigFatherMap[$userName];
         if (strcasecmp($userName, $fatherName) == 0) return $userName;
         $bigFatherName = $this->compressFindBigFather($fatherName);
