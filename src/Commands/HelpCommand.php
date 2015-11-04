@@ -17,7 +17,7 @@ class HelpCommand extends UserServiceCommand
     public function parse($input) {
         $this->arguments[] = strcasecmp($input, 'help');
     }
-    public function execute() {
+    public function execute(UserService $userService) {
         if ($this->arguments[0] == 0) {
             echo "We support commands: 1. follows 2. clout 'user' 3. clout  4. help  5 exit \n";
             echo "set following relations: user follows user e.g. Messi follows Xavi \n";
