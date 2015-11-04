@@ -11,5 +11,5 @@ namespace Clout;
 
 class App
 {
-    
+
 }
