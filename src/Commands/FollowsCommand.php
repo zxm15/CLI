@@ -21,7 +21,11 @@ class FollowsCommand extends UserServiceCommand
 //            echo "The followee is ". $this->arguments[1]."\n";
             $followerName = $this->arguments[0];
             $followeeName = $this->arguments[1];
-            $userService->follows($followerName, $followeeName);
+            try {
+                $userService->follows($followerName, $followeeName);
+            } catch(\RuntimeException $e) {
+                echo $e->getMessage();
+            }
 
         } else {
             echo "Please input your commands correctly. e.g. Messi follows Xavi\n";

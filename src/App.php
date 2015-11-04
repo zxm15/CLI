@@ -9,6 +9,10 @@
 namespace Clout;
 
 use Clout\Users\UserService;
+use Clout\Commands\FollowsCommand;
+use Clout\Commands\CloutCommand;
+use Clout\Commands\HelpCommand;
+use Clout\Commands\ExitCommand;
 
 class App
 {

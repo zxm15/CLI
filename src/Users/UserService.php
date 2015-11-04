@@ -51,7 +51,7 @@ class UserService
 
     public function follows($followerName, $followeeName)
     {
-        if (strcasecmp($followerName, $followeeName) == 0) throw new \RuntimeException("User cannot follow himself or herself");
+        if (strcasecmp($followerName, $followeeName) == 0) throw new \RuntimeException("A user cannot follow himself or herself \n");
         if (!$this->hasUser($followerName)) {
             $this->setUser($followerName);
             echo "New user ".$followerName." created! \n";
