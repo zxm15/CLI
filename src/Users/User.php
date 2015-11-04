@@ -22,19 +22,11 @@ class User
 
     }
 
-
     /**
      * @param User $follower
      */
     public function addFollower(User $follower) {
         $this->followers[$follower->name] = $follower;
-    }
-
-    /**
-     * @param User $followee
-     */
-    public function addFollowee(User $followee) {
-        $this->followees[$followee->name] = $followee;
     }
 
     /**
@@ -45,13 +37,6 @@ class User
         return array_key_exists($followerName, $this->followers);
     }
 
-    /**
-     * @param $followeeName
-     * @return bool
-     */
-    public function ifFolloweeExist($followeeName) {
-        return array_key_exists($followeeName, $this->followees);
-    }
 
     public function removeFollower($followerName) {
         unset($this->followers[$followerName]);
@@ -95,13 +80,6 @@ class User
      */
     public function getNumOfFollowers() {
         return count($this->followers);
-    }
-
-    /**
-     * @return Integer
-     */
-    public function getNumOfFollowees() {
-        return count($this->followees);
     }
 
     /**
