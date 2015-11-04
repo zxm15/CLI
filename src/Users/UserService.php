@@ -8,8 +8,8 @@
 
 namespace Clout\Users;
 
-use Clout\User;
-use Clout\UserSet;
+use Clout\Users\User;
+use Clout\Users\UserSet;
 
 class UserService
 {
