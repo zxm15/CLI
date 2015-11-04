@@ -77,10 +77,10 @@ class UserService
         //update follower and followee information
         $oldFollowee = $follower->getFollowee();
         if(! empty($oldFollowee)) {
-            echo "old followee is". $oldFollowee->getName();
+            //echo "old followee is". $oldFollowee->getName();
             $oldFollowee->removeFollower($follower->getName());
             $bigFatherName = $this->userSet->compressFindBigFather($oldFollowee->getName());
-            echo "The old followee's big father is ".$bigFatherName." \n";
+            //echo "The old followee's big father is ".$bigFatherName." \n";
             $this->updateInfluenceOfUsers($this->getUser($bigFatherName));
         }
         $follower->setFollowee($followee);
@@ -88,7 +88,7 @@ class UserService
         $this->userSet->unionSets($follower->getName(), $followee->getName());
         //find big father of the followee and update influence of the big father and its followers in range of influence
         $bigFatherName = $this->userSet->compressFindBigFather($followee->getName());
-        echo "The big father is ".$bigFatherName." \n";
+        //echo "The big father is ".$bigFatherName." \n";
         $this->updateInfluenceOfUsers($this->getUser($bigFatherName));
     }
 
@@ -99,7 +99,7 @@ class UserService
         $path = array();
         $loop = array();
         $influence = $this->updateInfluenceOfUsersHelper($user, $path, $visited, $loop) - 1;
-        echo "The loop size is ".count($loop);
+        //echo "The loop size is ".count($loop);
         if (count($loop) == 0) {
             $this->setUserInfluence($user->getName(), $influence);
         } else {
@@ -125,7 +125,7 @@ class UserService
         $path[$name] = $user;
         $influence = 0;
         foreach (array_values($user->getFollowers()) as $follower) {
-            echo "traverse follower ". $follower->getName(). "\n";
+            //echo "traverse follower ". $follower->getName(). "\n";
             $influence += $this->updateInfluenceOfUsersHelper($follower, $path, $visited, $loop);
         }
         unset($path[$name]);
