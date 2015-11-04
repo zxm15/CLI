@@ -13,9 +13,13 @@ use Clout\Users\UserSet;
 
 class UserService
 {
-    private $userMap; // user name => user
+
+    private $userMap; //  user name => user
+
     private $influenceMap; // user name => influence
-    private $userSet; //user father set
+
+    private $userSet; //user big father   user name => big father name
+
 
     public function __construct()
     {
@@ -25,7 +29,10 @@ class UserService
     }
 
 
-
+    /**
+     * Add user
+     * @param $userName
+     */
     public function setUser($userName)
     {
         $user = new User($userName);
@@ -33,25 +40,43 @@ class UserService
     }
 
 
+    /**
+     * @param $userName
+     * @return mixed
+     */
     public function getUser($userName) {
         return $this->userMap[$userName];
     }
 
+    /**
+     * @param $userName
+     */
     public function removeUser($userName)
     {
         unset($this->userMap[$userName]);
     }
 
 
+    /**
+     * Check if a user exists
+     * @param $userName
+     * @return bool
+     */
     public function hasUser($userName)
     {
         return array_key_exists($userName, $this->userMap);
     }
 
 
+    /**
+     * Update following relation between two users; update influences of them and their connected users
+     * @param $followerName
+     * @param $followeeName
+     */
     public function follows($followerName, $followeeName)
     {
         if (strcasecmp($followerName, $followeeName) == 0) throw new \RuntimeException("A user cannot follow himself or herself \n");
+        //Create new users if not existed
         if (!$this->hasUser($followerName)) {
             $this->setUser($followerName);
             echo "New user ".$followerName." created! \n";
@@ -72,28 +97,34 @@ class UserService
     }
 
 
+    /**
+     * For a new following relations, update old and new followees and their connected users influence and connected set
+     * @param \Clout\Users\User $follower
+     * @param \Clout\Users\User $followee
+     */
     private function followsHelper(User $follower, User $followee) {
+
         if ($follower->getFollowee() === $followee) return;
-        //update follower and followee information
         $oldFollowee = $follower->getFollowee();
+        //update old followee's influence and big father
         if(! empty($oldFollowee)) {
-            //echo "old followee is". $oldFollowee->getName();
             $oldFollowee->removeFollower($follower->getName());
             $bigFatherName = $this->userSet->compressFindBigFather($oldFollowee->getName());
-            //echo "The old followee's big father is ".$bigFatherName." \n";
             $this->updateInfluenceOfUsers($this->getUser($bigFatherName));
         }
+        //update new followee's influence and big father
         $follower->setFollowee($followee);
         $followee->addFollower($follower);
         $this->userSet->unionSets($follower->getName(), $followee->getName());
-        //find big father of the followee and update influence of the big father and its followers in range of influence
         $bigFatherName = $this->userSet->compressFindBigFather($followee->getName());
-        //echo "The big father is ".$bigFatherName." \n";
         $this->updateInfluenceOfUsers($this->getUser($bigFatherName));
     }
 
 
-
+    /**
+     * Depth first traversal to update influences of the user; Update loop if there is any
+     * @param \Clout\Users\User $user
+     */
     private function updateInfluenceOfUsers(User $user) {
         $visited = array();
         $path = array();
@@ -109,6 +140,14 @@ class UserService
         }
     }
 
+    /**
+     *
+     * @param \Clout\Users\User $user
+     * @param $path
+     * @param $visited
+     * @param $loop
+     * @return int
+     */
     private function updateInfluenceOfUsersHelper(User $user, &$path, &$visited, &$loop) {
         if (is_null($user)) {
             return 0;
@@ -135,18 +174,29 @@ class UserService
     }
 
 
-
+    /**
+     * @param $userName
+     * @param $influence
+     */
     private function setUserInfluence($userName, $influence) {
         $this->influenceMap[$userName] = $influence;
     }
 
 
+    /**
+     * @param $userName
+     * @return mixed
+     * @throws RuntimeException
+     */
     public function getUserInfluence($userName) {
         if (! $this->hasUser($userName)) throw new RuntimeException("The user does not exist!");
         return $this->influenceMap[$userName];
     }
 
 
+    /**
+     * @return array
+     */
     public function getInfluenceOfAllUsers()
     {
         return $this->influenceMap;
