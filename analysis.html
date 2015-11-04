@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The clout CLI project analysis</title>
+    <style>
+        h1 {
+            color: darkgoldenrod;
+        }
+        p,li {
+            color: cornflowerblue;
+            font-size: x-large;
+        }
+    </style>
+</head>
+<body>
+    <h1>Assumptions</h1>
+    <ul>
+        <li>name is a user's unique identifier</li>
+        <li>In the follows command, new user will be created automatically</li>
+        <li>There are far more read requests (clout, clout user) than write requests (follows)</li>
+        <li>The number of users is relatively small which can be stored in one machine</li>
+    </ul>
+
+    <h1>Analysis</h1>
+
+    <p>The social network can be projected to a directed graph. The process of finding influence of a user could be solved using BFS or DFS. Since each user only
+    have a followee, the time complexity of traversal is bounded in O(n) time where n is the number of all users.
+
+    <h1>Trade-offs</h1>
+
+    <p>There are two directions to solve the problem. Based on the different senarios, we could end up with different solutions. Assume n is the number of users </p>
+    <p>1. If there are far more write requests than read requests, a solution that optimizes the follows command is more appropriate.
+        a possible solution would be in the follows command, we simply store the following relation between the follower and the followee which only take
+        O(1) time; When the clout and clout user commands is executed, we could use DFS or BFS to traverse the graph in find the
+        influence of each user in O(n) time at worst. Space complexity is O(n) time.
+
+    </p>
+    <p>2. In oppsite, if there are far more read requests than read requests, we should focus more on optimizing the clout and clout user commands. This is also the version I choose to solve.
+        We could keep a map of influence of each user. As long as we keep the influence information in the map up to date, the time cost of get each user's
+        influence will be reduced to O(1) time. To update the map in a write(follows) request, I implemented it with union find and DFS algorithms. Union find algorithm could help us to find the a proper node to update its weakly connected component in amortized O(1) time.
+        The DFS which update the influence of each user in the traversal takes O(n) time at worst. Therefore, the write request takes O(n) time and read requests takes only
+        O(1) time which is very desired. Space complexity is still O(n) time even though we will need to store two more maps: influence map and user set map.
+    </p>
+
+</body>
+</html>
