@@ -115,7 +115,12 @@ class UserService
         //update new followee's influence and big father
         $follower->setFollowee($followee);
         $followee->addFollower($follower);
-        $this->userSet->unionSets($follower->getName(), $followee->getName());
+        try {
+            $this->userSet->unionSets($follower->getName(), $followee->getName());
+        } catch (\Exception $e){
+            echo $e->getMessage();
+        }
+
         $bigFatherName = $this->userSet->compressFindBigFather($followee->getName());
         $this->updateInfluenceOfUsers($this->getUser($bigFatherName));
     }

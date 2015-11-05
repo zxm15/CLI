@@ -1,13 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zxm
- * Date: 11/4/15
- * Time: 1:53 PM
- */
 
 namespace Clout\Users;
 
+
+use Doctrine\Instantiator\Exception\UnexpectedValueException;
 
 class UserSet
 {
@@ -59,7 +55,19 @@ class UserSet
     public function unionSets($followerName, $followeeName) {
         $bigFatherOfFollower = $this->compressFindBigFather($followerName);
         $bigFatherOfFollowee = $this->compressFindBigFather($followeeName);
+        if ($bigFatherOfFollowee == null || $bigFatherOfFollowee == null)
+            throw new UnexpectedValueException("Dude, user does not exist \n");
         $this->setBigFather($bigFatherOfFollower, $bigFatherOfFollowee);
     }
+
+    /**
+     * @return array
+     */
+    public function getBigFatherMap()
+    {
+        return $this->bigFatherMap;
+    }
+
+
 
 }
