@@ -18,7 +18,7 @@ class ExitCommand extends UserServiceCommand
      * @param $input
      */
     public function parse($input) {
-        $this->arguments[] = strcasecmp($input, 'exit');
+        $this->arguments[] = $input =='exit';
     }
 
     /**
@@ -26,7 +26,7 @@ class ExitCommand extends UserServiceCommand
      * @param UserService $userService
      */
     public function execute(UserService $userService) {
-        if ($this->arguments[0] == 0) {
+        if ($this->arguments[0] == 1) {
             echo "clout exited!\n";
             exit;
         } else {
