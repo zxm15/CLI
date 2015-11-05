@@ -16,7 +16,7 @@
 <body>
     <h1>Assumptions</h1>
     <ul>
-        <li>name is a user's unique identifier</li>
+        <li>Name serves as the unique identifier of a user</li>
         <li>In the follows command, new user will be created automatically</li>
         <li>There are far more read requests (clout, clout user) than write requests (follows)</li>
         <li>The number of users is relatively small which can be stored in one machine</li>
@@ -24,24 +24,40 @@
 
     <h1>Analysis</h1>
 
-    <p>The social network can be projected to a directed graph. The process of finding influence of a user could be solved using BFS or DFS. Since each user only
+    <p>The social network can be projected to a directed graph. The graph is built by the 'follows' command. Based on the rules,
+        each graph node(user)'s in-degree (max number of people a user can follow) up to 1  while out-degree (max number of followers a user can have) is unlimited.
+        The process of finding influence of a user could be solved using BFS or DFS. Since each user only
     have a followee, the time complexity of traversal is bounded in O(n) time where n is the number of all users.
 
     <h1>Trade-offs</h1>
 
-    <p>There are two directions to solve the problem. Based on the different senarios, we could end up with different solutions. Assume n is the number of users </p>
+    <p>There are two directions to solve the problem: read-heavy or write heavy. We apply different methods for them. In following, we assume n is the number of users: </p>
     <p>1. If there are far more write requests than read requests, a solution that optimizes the follows command is more appropriate.
         a possible solution would be in the follows command, we simply store the following relation between the follower and the followee which only take
         O(1) time; When the clout and clout user commands is executed, we could use DFS or BFS to traverse the graph in find the
-        influence of each user in O(n) time at worst. Space complexity is O(n) time.
+        influence of each user in O(n) time at worst. Space complexity is O(n) time. The solution is straightforward.
 
     </p>
-    <p>2. In oppsite, if there are far more read requests than read requests, we should focus more on optimizing the clout and clout user commands. This is also the version I choose to solve.
+    <p>2. In the contrary, if there are far more read requests than read requests, we should focus more on optimizing the clout and clout user commands. This is also the version I choose to solve because this context is more common.
         We could keep a map of influence of each user. As long as we keep the influence information in the map up to date, the time cost of get each user's
-        influence will be reduced to O(1) time. To update the map in a write(follows) request, I implemented it with union find and DFS algorithms. Union find algorithm could help us to find the a proper node to update its weakly connected component in amortized O(1) time.
+        influence will be reduced to O(1) time. The way to keep influence information up to date, we need traverse the graph node which is affected by each update (follows) that changes
+        the structure of the graph. In the process, we updated the influence of each affected user. To update the map in a write(follows) request, I implemented it with union find and DFS algorithms. Union find algorithm could help us to find the a proper node to update its weakly connected component in amortized O(1) time.
         The DFS which update the influence of each user in the traversal takes O(n) time at worst. Therefore, the write request takes O(n) time and read requests takes only
         O(1) time which is very desired. Space complexity is still O(n) time even though we will need to store two more maps: influence map and user set map.
     </p>
+
+    <h1>Testing</h1>
+    <p>For unit testing, I created one test class for each class in src folder and create happy cases and edges cases to test functions
+        For integration testing, I used CLI to test application's functions and user experience in top-down manner.
+
+    </p>
+
+    <h1>How to use</h1>
+    <p>
+        The way to use the app is similar as the way in the github. Type ./clout to enter the app, then input the commands. It also provides help and exit commands.
+        You probably need to change the php interpreter path to execute the clout file
+    </p>
+
 
 </body>
 </html>
