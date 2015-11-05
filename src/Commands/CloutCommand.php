@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zxm
- * Date: 11/4/15
- * Time: 2:04 PM
- */
 
 namespace Clout\Commands;
 

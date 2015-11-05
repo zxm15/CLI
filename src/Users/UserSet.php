@@ -3,8 +3,6 @@
 namespace Clout\Users;
 
 
-use Doctrine\Instantiator\Exception\UnexpectedValueException;
-
 class UserSet
 {
     private $bigFatherMap = array();
@@ -56,7 +54,7 @@ class UserSet
         $bigFatherOfFollower = $this->compressFindBigFather($followerName);
         $bigFatherOfFollowee = $this->compressFindBigFather($followeeName);
         if ($bigFatherOfFollowee == null || $bigFatherOfFollowee == null)
-            throw new UnexpectedValueException("Dude, user does not exist \n");
+            throw new \UnexpectedValueException("Dude, user does not exist \n");
         $this->setBigFather($bigFatherOfFollower, $bigFatherOfFollowee);
     }
 

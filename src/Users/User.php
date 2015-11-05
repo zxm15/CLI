@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zxm
- * Date: 11/4/15
- * Time: 1:51 PM
- */
+
 
 namespace Clout\Users;
 
