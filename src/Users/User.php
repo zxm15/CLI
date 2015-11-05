@@ -30,16 +30,18 @@ class User
     }
 
     /**
-     * @param $followerName
+     * @param $userName
      * @return bool
      */
-    public function ifFollowerExist($followerName) {
-        return array_key_exists($followerName, $this->followers);
+    public function hasFollower($userName) {
+        return array_key_exists($userName, $this->followers);
     }
 
 
-    public function removeFollower($followerName) {
-        unset($this->followers[$followerName]);
+    public function removeFollower($userName) {
+        if (! $this->hasFollower($userName))
+            throw new \UnexpectedValueException($userName.' is not following me. I cannot believe it!');
+        unset($this->followers[$userName]);
     }
     /**Getters and Setters*/
 

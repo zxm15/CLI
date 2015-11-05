@@ -4,8 +4,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Clout\\": "src",
-      "Test\\": "tests"
+      "Clout\\": "src"
     }
   }
 
