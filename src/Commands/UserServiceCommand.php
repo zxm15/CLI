@@ -22,7 +22,8 @@ abstract class UserServiceCommand
      * @return int
      */
     public static function isCommand($input) {
-        return preg_match(static::PATTERN, $input);
+        if(preg_match(static::PATTERN, $input) == 1) return true;
+        return false;
     }
 
     /**
@@ -31,6 +32,10 @@ abstract class UserServiceCommand
      */
     public function parse($input) {
         $this->arguments = preg_split(static::PATTERN, $input);
+        if (count($this->arguments) == 2) {
+            $this->arguments[0] = trim($this->arguments[0]);
+            $this->arguments[1] = trim($this->arguments[1]);
+        }
     }
 
     /**
@@ -39,4 +44,14 @@ abstract class UserServiceCommand
      * @return mixed
      */
     public abstract function execute(UserService $userService);
+
+    /**
+     * @return array   parameters of users input
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
+    }
+
+
 }
