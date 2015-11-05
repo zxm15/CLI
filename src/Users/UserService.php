@@ -37,6 +37,9 @@ class UserService
     {
         $user = new User($userName);
         $this->userMap[$userName] = $user;
+        echo "New user ".$userName." created! \n";
+        $this->userSet->addUser($userName);
+        $this->setUserInfluence($userName, 0);
     }
 
 
@@ -46,14 +49,6 @@ class UserService
      */
     public function getUser($userName) {
         return $this->userMap[$userName];
-    }
-
-    /**
-     * @param $userName
-     */
-    public function removeUser($userName)
-    {
-        unset($this->userMap[$userName]);
     }
 
 
@@ -79,13 +74,9 @@ class UserService
         //Create new users if not existed
         if (!$this->hasUser($followerName)) {
             $this->setUser($followerName);
-            echo "New user ".$followerName." created! \n";
-            $this->userSet->addUser($followerName);
         }
         if (!$this->hasUser($followeeName)) {
             $this->setUser($followeeName);
-            echo "New user ".$followeeName." created! \n";
-            $this->userSet->addUser($followeeName);
         }
 
         $follower = $this->getUser($followerName);
@@ -191,10 +182,10 @@ class UserService
     /**
      * @param $userName
      * @return mixed
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
     public function getUserInfluence($userName) {
-        if (! $this->hasUser($userName)) throw new RuntimeException("The user does not exist!");
+        if (! $this->hasUser($userName)) throw new \RuntimeException("The user does not exist.");
         return $this->influenceMap[$userName];
     }
 
@@ -206,5 +197,31 @@ class UserService
     {
         return $this->influenceMap;
     }
+
+    /**
+     * @return array
+     */
+    public function getUserMap()
+    {
+        return $this->userMap;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInfluenceMap()
+    {
+        return $this->influenceMap;
+    }
+
+    /**
+     * @return \Clout\Users\UserSet
+     */
+    public function getUserSet()
+    {
+        return $this->userSet;
+    }
+
+
 
 }

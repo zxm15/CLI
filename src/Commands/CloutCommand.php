@@ -25,8 +25,13 @@ class CloutCommand extends UserServiceCommand
             if (strlen($this->arguments[1]) > 0) {
                 echo "Clout user ".$this->arguments[1]." \n";
                 $user = $this->arguments[1];
-                $influence = $userService->getUserInfluence($user);
-                echo $user." has ".$influence." followers \n";
+                try {
+                    $influence = $userService->getUserInfluence($user);
+                    echo $user." has ".$influence." followers \n";
+                } catch (\Exception $e) {
+                    echo $e->getMessage();
+                }
+
 
             } else {
                 echo "Clout all users \n";
